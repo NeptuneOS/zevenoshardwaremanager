@@ -96,6 +96,42 @@ function check() {
 	fi
 } # check function
 
+function install_driver() {
+	INSTALL_PARAM=$1
+	dpkg -l linux-headers-`uname -r`
+	if [ $? == 0 ]; then
+	  HEADERS="installed"
+	else
+	  HEADERS="notinstalled"
+	fi
+	#echo $HEADERS
+	if [ $HEADERS == "notinstalled" ]; then
+	  if ! "kdesudo qapt-batch linux-headers-$(uname -r)" ;then
+     		echo 'Please install linux-headers-$(uname -r) package to proceed'
+		exit 1
+	  else
+          	echo 'Headers installed'
+          fi
+	fi # Headers not installed
+        case $INSTALL_PARAM in 
+		nvidia)
+		  kdesudo "qapt-batch $INSTALL_PARAM nvidia-xconfig" ;
+		  kdesudo "modprobe nvidia"
+		  kdesudo "nvidia-xconfig -o /etc/X11/xorg.conf"
+		  ;;
+		fglrx)
+		  kdesudo "qapt-batch $INSTALL_PARAM fglrx-control xvba-va-driver amd-opencl-icd"
+		  ;;
+        esac
+	if [ -d /live/image ]; then
+    		if [ -e /live/image/live-rw ] || [ -e /live/image/live-sn ]; then
+      			kdesudo "sed -i 's/quiet persistent/quiet persistent nomodeset/g' /live/image/syslinux.cfg"
+                fi
+    	fi # Live-RW & Live-SN IF
+	kdialog --msgbox "Installation complete"
+        echo "Installation complete"
+} #install function
+
 
 # Check parameters
 if [ "$#" -ne 0 ]; then
@@ -108,7 +144,8 @@ if [ "$#" -ne 0 ]; then
 	      check
               ;;
             "i")
-              echo "Option $optname has value $OPTARG"
+              #echo "Option $optname has value $OPTARG"
+	      install_driver $OPTARG
               ;;
             "u")
               echo "Option $optname has value $OPTARG"
