@@ -115,12 +115,12 @@ function install_driver() {
 	fi # Headers not installed
         case $INSTALL_PARAM in 
 		nvidia)
-		  kdesudo "qapt-batch $INSTALL_PARAM nvidia-xconfig" ;
+		  kdesudo "qapt-batch --install $INSTALL_PARAM nvidia-xconfig" ;
 		  kdesudo "modprobe nvidia"
 		  kdesudo "nvidia-xconfig -o /etc/X11/xorg.conf"
 		  ;;
 		fglrx)
-		  kdesudo "qapt-batch $INSTALL_PARAM fglrx-control xvba-va-driver amd-opencl-icd"
+		  kdesudo "qapt-batch --install $INSTALL_PARAM fglrx-control xvba-va-driver amd-opencl-icd"
 		  ;;
         esac
 	if [ -d /live/image ]; then
@@ -132,6 +132,27 @@ function install_driver() {
         echo "Installation complete"
 } #install function
 
+function uninstall_driver() {
+	INSTALL_PARAM=$1
+        case $INSTALL_PARAM in 
+		nvidia)
+		  kdesudo "qapt-batch --uninstall $INSTALL_PARAM nvidia-xconfig" ;
+		  kdesudo "modprobe nvidia"
+		  kdesudo "nvidia-xconfig -o /etc/X11/xorg.conf"
+		  ;;
+		fglrx)
+		  kdesudo "qapt-batch --uninstall $INSTALL_PARAM fglrx-control xvba-va-driver amd-opencl-icd"
+		  ;;
+        esac
+        # TODO: Check if syslinux.cfg really contains nomodeset before removing. If really removing makes sense at all
+	#if [ -d /live/image ]; then
+    	#	if [ -e /live/image/live-rw ] || [ -e /live/image/live-sn ]; then
+      	#		kdesudo "sed -i 's/quiet persistent/quiet persistent nomodeset/g' /live/image/syslinux.cfg"
+        #        fi
+    	#fi # Live-RW & Live-SN IF
+	kdialog --msgbox "Removal complete"
+        echo "Removal complete"
+}
 
 # Check parameters
 if [ "$#" -ne 0 ]; then
@@ -148,7 +169,8 @@ if [ "$#" -ne 0 ]; then
 	      install_driver $OPTARG
               ;;
             "u")
-              echo "Option $optname has value $OPTARG"
+              #echo "Option $optname has value $OPTARG"
+	      uninstall_driver $OPTARG
               ;;
             "?")
               echo "Unknown option $OPTARG"
