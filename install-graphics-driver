@@ -113,13 +113,16 @@ function install_driver() {
           	echo 'Headers installed'
           fi
 	fi # Headers not installed
+	#echo $INSTALL_PARAM
         case $INSTALL_PARAM in 
-		nvidia)
+		*nvidia*)
+		  echo "Install nvidia driver"
 		  kdesudo "qapt-batch --install $INSTALL_PARAM nvidia-xconfig" ;
 		  kdesudo "modprobe nvidia"
 		  kdesudo "nvidia-xconfig -o /etc/X11/xorg.conf"
 		  ;;
-		fglrx)
+		*fglrx*)
+		  echo "Install fglrx driver"
 		  kdesudo "qapt-batch --install $INSTALL_PARAM fglrx-control xvba-va-driver amd-opencl-icd"
 		  ;;
         esac
