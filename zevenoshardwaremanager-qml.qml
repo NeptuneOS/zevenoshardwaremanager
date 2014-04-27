@@ -155,6 +155,13 @@ Rectangle {
             NumberAnimation { duration: 1000 }
         }
 
+        PlasmaComponents.Button {
+            anchors.right: parent.right
+            anchors.top: parent.top
+            text: "X"
+            onClicked: parent.opacity = 0
+        }
+
         Image {
             id: aboutLogo
             source: "img/about.png"
@@ -163,9 +170,8 @@ Rectangle {
         }
         Text {
             id: aboutTxt
-            text: qsTr("<b>ZevenOS Hardware Manager 2.2.2</b><br />released under the terms of <b>GPLv3</b><br /> by Leszek Lesner \
-<br /><br />This application allows you<br>to install proprietary drivers<br />for your graphicscard or printer.<br /><br />\
-If you want to try out experimental drivers<br />activate the debian experimental sourceslist.")
+            text: qsTr("<b>ZevenOS Hardware Manager 2.3</b><br />released under the terms of <b>GPLv3</b><br /> by Leszek Lesner \
+<br /><br />This application allows you<br>to install proprietary drivers<br />for your graphicscard or printer.")
             anchors.left: aboutLogo.right
             anchors.leftMargin: 20
             anchors.top: aboutLogo.top
