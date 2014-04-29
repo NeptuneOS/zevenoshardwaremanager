@@ -19,10 +19,11 @@ gcard = "empty"
 print "=== DEBUG ===: Current working directory: " + getcwd()
 
 def hpinstall():
-  popen("kdesudo magi-kit-install.sh hplip")
+  # Avoid broken pipe error by using system here
+  system("magi-kit-install.sh hplip")
   
 def brotherinstall():
-  popen("kdesudo magi-kit-install.sh brother-lpr-drivers-common brother-lpr-drivers-extra brother-lpr-drivers-laser brother-lpr-drivers-laser1 brother-lpr-drivers-mfc9420cn brother-lpr-drivers-bh7 brother-lpr-drivers-ac brother-cups-wrapper-mfc9420cn brother-cups-wrapper-laser1 brother-cups-wrapper-laser brother-cups-wrapper-extra brother-cups-wrapper-common brother-cups-wrapper-bh7 brother-cups-wrapper-ac")
+  system("magi-kit-install.sh brother-lpr-drivers-common brother-lpr-drivers-extra brother-lpr-drivers-laser brother-lpr-drivers-laser1 brother-lpr-drivers-mfc9420cn brother-lpr-drivers-bh7 brother-lpr-drivers-ac brother-cups-wrapper-mfc9420cn brother-cups-wrapper-laser1 brother-cups-wrapper-laser brother-cups-wrapper-extra brother-cups-wrapper-common brother-cups-wrapper-bh7 brother-cups-wrapper-ac")
 
 def graphicsdriverinstall(version):
   if version == "stable":
