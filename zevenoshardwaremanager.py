@@ -8,8 +8,9 @@
 import sys
 
 from PyQt4.QtCore import QDateTime, QObject, QUrl, pyqtSignal, QCoreApplication
-from PyQt4.QtGui import QApplication, QDesktopWidget
+from PyQt4.QtGui import QApplication, QDesktopWidget, QPalette, QIcon
 from PyQt4.QtDeclarative import QDeclarativeView
+from PyKDE4.plasma import * 
 #from subprocess import Popen, PIPE
 from os import popen
 from os import system
@@ -51,6 +52,13 @@ def checkdriverinstalled():
     rootObject.showGraphicdriverInstalledButton()
       
 app = QApplication(sys.argv)
+app.setGraphicsSystem("raster")
+app.setWindowIcon(QIcon('img/hardware.png'))
+
+defaultBgColor=app.palette().color(QPalette.Window).name()
+Plasma.Theme.defaultTheme().setUseGlobalSettings(False)
+Plasma.Theme.defaultTheme().setThemeName("AirNeptune")
+
 
 # Create the QML user interface.
 view = QDeclarativeView()
@@ -63,6 +71,9 @@ view.setResizeMode(QDeclarativeView.SizeRootObjectToView)
 # 'messageRequired' signal and JavaScript 'updateMessage' function.  Both
 # can be accessed transparently from Python.
 rootObject = view.rootObject()
+
+# Set default background
+rootObject.setBgColor(defaultBgColor)
 
 # Provide the current date and time when requested by the user interface.
 rootObject.hpinstall.connect(hpinstall)

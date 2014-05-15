@@ -8,6 +8,11 @@ Rectangle {
     signal graphicsdriverinstall(string version);
     signal pommedinstall;
     signal checkdriverinstalled();
+    
+    function setBgColor(colorCode) {
+	rectangle1.color = colorCode
+    }
+    
     function graphicsHighlight(text) {
         graphicstxt.font.pixelSize = 18
         graphicstxt.font.bold = true
@@ -142,9 +147,9 @@ Rectangle {
     Rectangle {
         id: aboutPage
         width: rectangle1.width -(rectangle1.width/8)
-        height: rectangle1.height - (rectangle1.height/8)
+        height: rectangle1.height - (rectangle1.height/3)
         anchors.centerIn: rectangle1
-        color: "#C4BDBB"
+        color: rectangle1.color
         border.color: "blue"
         border.width: 1
         radius: 8
