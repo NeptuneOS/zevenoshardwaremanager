@@ -139,6 +139,7 @@ elif gcard == "ati":
 
 # Display the user interface and allow the user to interact with it.
 view.setGeometry(100, 100, 500, 300)
+view.setFixedSize(500, 300) 
 view.setWindowTitle(QCoreApplication.translate(None, 'ZevenOS Hardware Manager'))
 screen = QDesktopWidget().screenGeometry()
 size =  view.geometry()
