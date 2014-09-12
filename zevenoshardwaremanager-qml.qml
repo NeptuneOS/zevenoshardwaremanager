@@ -8,6 +8,8 @@ Rectangle {
     signal graphicsdriverinstall(string version);
     signal pommedinstall;
     signal checkdriverinstalled();
+
+    property bool graphicsAllowInstall: false
     
     function setBgColor(colorCode) {
 	rectangle1.color = colorCode
@@ -60,11 +62,13 @@ Rectangle {
         graphicdriverimg.source = sourceimg
         if (sourceimg != "img/hardware.png") {
             graphicsinstalltxt.visible = true
+            graphicsAllowInstall = true
         }
     }
 
     function showGraphicdriverInstallButton() {
         graphicsinstalltxt.visible = true
+        graphicsAllowInstall = true
         //graphicdriverimg.opacity = 0.5
     }
 
@@ -72,6 +76,7 @@ Rectangle {
         graphicsinstalledtxt.visible = true
         //graphicdriverimg.opacity = 0.5
         graphicsinstalltxt.visible = false
+        graphicsAllowInstall = false
     }
 
     function hideGraphicdriverInstallButton() {
@@ -576,7 +581,7 @@ Rectangle {
                 target: graphicsinstalltxt
                 text: "Install"
                 opacity: 1
-                visible: false
+                visible: graphicsAllowInstall
                 //horizontalAlignment: Text.AlignLeft
                 font.pixelSize: 16
                 font.bold: true
@@ -585,7 +590,7 @@ Rectangle {
             PropertyChanges {
                 target: graphicsinstalledtxt
                 opacity: 1
-                visible: false
+                visible: !graphicsAllowInstall
                 //horizontalAlignment: Text.AlignLeft
                 font.pixelSize: 16
                 font.bold: true

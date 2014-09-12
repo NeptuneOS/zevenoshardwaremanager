@@ -90,7 +90,11 @@ ginfo = popen(getcwd() + "/install-graphics-driver -c").readlines()
 #print ginfo
 graphicscard = ginfo[0].split(":")[1].strip()
 graphicscardName = ginfo[1].split(":")[1].strip()
-driver = ginfo[2].split(":")[1].strip()
+driversplit = ginfo[2].split(":")
+if len(driversplit) < 2:
+  print "Woops, driver could not be detected. Maybe card isn't supported or no driver available"
+else: 
+  driver = driversplit[1].strip()
 print "=== DEBUG ===: Graphicscard found : " + graphicscardName
   
 # Get Info about available driver versions
