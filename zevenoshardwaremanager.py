@@ -29,9 +29,9 @@ def brotherinstall():
 def graphicsdriverinstall(version):
   if version == "stable":
       if gcard == "nvidia":
-          system(getcwd() + "/install-graphics-driver -i " + driver)
+          system(getcwd() + "/install-graphics-driver -i " + driver + " &")
       elif gcard == "ati":
-          ystem(getcwd() + "/install-graphics-driver -i " + driver)
+          system(getcwd() + "/install-graphics-driver -i " + driver + " &")
   #elif version == "experimental":
       #if gcard == "nvidia":
           #system("kdesudo /usr/bin/install-nvidia.sh exp")

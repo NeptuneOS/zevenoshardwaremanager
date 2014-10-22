@@ -96,6 +96,17 @@ function check() {
 	fi
 } # check function
 
+function checkResult() {
+	RESULT=$1
+	if [ $RESULT -ne 0 ] ; then
+		echo
+		echo "!!!!!!!!!!!  Installation Failed !!!!!!!!!!!!!!!!!"
+		echo
+                kdialog --msgbox "Installation failed! \nMake sure to have a working internet connection\nand enough free disk space available."
+		exit $RESULT
+	fi	
+} # check result
+
 function install_driver() {
 	INSTALL_PARAM=$1
 	dpkg -l linux-headers-`uname -r`
@@ -106,24 +117,24 @@ function install_driver() {
 	fi
 	#echo $HEADERS
 	if [ $HEADERS == "notinstalled" ]; then
-	  if ! "kdesudo qapt-batch linux-headers-$(uname -r)" ;then
-     		echo 'Please install linux-headers-$(uname -r) package to proceed'
-		exit 1
-	  else
-          	echo 'Headers installed'
-          fi
+	  # command && echo "OK" || echo "NOK"
+	  kdesudo "qapt-batch --install linux-headers-$(uname -r)" 
+          checkResult $?
 	fi # Headers not installed
 	#echo $INSTALL_PARAM
         case $INSTALL_PARAM in 
 		*nvidia*)
 		  echo "Install nvidia driver"
-		  kdesudo "qapt-batch --install $INSTALL_PARAM nvidia-xconfig" ;
+		  kdesudo "qapt-batch --install $INSTALL_PARAM nvidia-xconfig"
+                  checkResult $?
 		  kdesudo "modprobe nvidia"
 		  kdesudo "nvidia-xconfig -o /etc/X11/xorg.conf"
+                  checkResult $?
 		  ;;
 		*fglrx*)
 		  echo "Install fglrx driver"
 		  kdesudo "qapt-batch --install $INSTALL_PARAM fglrx-control xvba-va-driver amd-opencl-icd"
+                  checkResult $?
 		  ;;
         esac
 	if [ -d /live/image ]; then
